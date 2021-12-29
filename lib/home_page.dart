@@ -1,14 +1,13 @@
-import 'package:bharti_assignment/ImagePreview.dart';
-import 'package:bharti_assignment/Network/Model/ResponseListImages/ResponsePixabayImageList.dart';
+import 'image_preview.dart';
+import 'Network/Model/ResponseListImages/response_pixabay_image_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'Network/Api/ApiHandler.dart';
-import 'Network/Model/ResponseListImages/ResponsePixabayImage.dart';
-import 'Provider/GetImageProvider.dart';
-import 'Provider/ProviderUtils.dart';
+import 'Network/Model/ResponseListImages/response_pixabay_image.dart';
+import 'Provider/image_provider.dart';
+import 'Provider/provider_utils.dart';
 
 class HomePage extends StatefulHookWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   ResponsePixabayImage? _responsePixabayImage;
   List<ResponsePixabayImageList>? _responsePixabayImageList;
   bool _isFirstTimeScreenCalling = true;
-  late GetImageProvider _getImageProvider;
+  late ImageProvider _getImageProvider;
 
 
   @override
@@ -32,8 +31,8 @@ class _HomePageState extends State<HomePage> {
     super.didChangeDependencies();
     if (_isFirstTimeScreenCalling) {
       _isFirstTimeScreenCalling = false;
-      GetImageProvider.resetAllDataWithNotifyUI(context);
-      GetImageProvider.checkGetMembersStateAndChangeUI(context);
+      ImageProvider.resetAllDataWithNotifyUI(context);
+      ImageProvider.checkGetMembersStateAndChangeUI(context);
     }
   }
 
@@ -46,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    _getImageProvider = useProvider(getImageProvider);
+    _getImageProvider = useProvider(imageProvider);
     _responsePixabayImage = _getImageProvider.getResponseGetPixabayImage;
     _responsePixabayImageList = _getImageProvider.getResponsePixabayImageList;
 

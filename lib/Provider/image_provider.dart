@@ -1,15 +1,13 @@
-
-
-import 'package:bharti_assignment/Network/Api/ApiHandler.dart';
-import 'package:bharti_assignment/Network/Model/ResponseListImages/ResponsePixabayImage.dart';
-import 'package:bharti_assignment/Network/Model/ResponseListImages/ResponsePixabayImageList.dart';
-import 'package:bharti_assignment/Utils/AppEnums.dart';
+import '../Network/Api/api_handler.dart';
+import '../Network/Model/ResponseListImages/response_pixabay_image.dart';
+import '../Network/Model/ResponseListImages/response_pixabay_image_list.dart';
+import '../Utils/app_enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/src/provider.dart';
 
-import 'ProviderUtils.dart';
+import 'provider_utils.dart';
 
-class GetImageProvider extends ChangeNotifier{
+class ImageProvider extends ChangeNotifier{
 
   ResponsePixabayImage? _responsePixabayImage;
   UIStates _uiStatesGetMembers = UIStates.DEFAULT;
@@ -81,10 +79,10 @@ class GetImageProvider extends ChangeNotifier{
     return response;
   }
 
-  static resetAllDataWithNotifyUI(BuildContext context) =>
+  static void resetAllDataWithNotifyUI(BuildContext context) =>
       context.read(getImageProvider)._resetAllDataWithNotifyUI();
 
-  static checkGetMembersStateAndChangeUI(BuildContext context) =>
+  static void checkGetMembersStateAndChangeUI(BuildContext context) =>
       context.read(getImageProvider)._checkGetMembersStateAndChangeUI();
 
   static Future<ResponsePixabayImage?> hitApiToFetchImages(BuildContext context) =>

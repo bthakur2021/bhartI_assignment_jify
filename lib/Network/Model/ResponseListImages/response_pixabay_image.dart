@@ -1,8 +1,9 @@
-import 'package:bharti_assignment/Network/Model/ResponseListImages/ResponsePixabayImageList.dart';
-import 'package:bharti_assignment/Network/Model/ResponseListImages/ResponsePixabayImageListConverter.dart';
+import 'package:bharti_assignment/Network/Model/ResponseListImages/response_pixabay_image_list.dart';
+import 'package:bharti_assignment/Network/Model/ResponseListImages/response_pixabay_image_list_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-part 'ResponsePixabayImage.g.dart';
-part 'ResponsePixabayImage.freezed.dart';
+
+part 'response_pixabay_image.g.dart';
+part 'response_pixabay_image.freezed.dart';
 
 
 @freezed

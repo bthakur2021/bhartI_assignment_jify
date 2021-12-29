@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ResponsePixabayImageList.dart';
+part of 'response_pixabay_image_list.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-part 'ResponsePixabayImageList.g.dart';
-part 'ResponsePixabayImageList.freezed.dart';
+
+part 'response_pixabay_image_list.g.dart';
+part 'response_pixabay_image_list.freezed.dart';
 
 @freezed
 class ResponsePixabayImageList with _$ResponsePixabayImageList{

@@ -1,5 +1,5 @@
 
-import 'package:bharti_assignment/Network/Model/ResponseListImages/ResponsePixabayImageList.dart';
+import 'response_pixabay_image_list.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 class ResponsePixabayImageListConverter implements JsonConverter<ResponsePixabayImageList, Map<String, dynamic>> {
