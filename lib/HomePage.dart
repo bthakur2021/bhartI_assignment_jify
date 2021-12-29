@@ -2,11 +2,15 @@ import 'package:bharti_assignment/ImagePreview.dart';
 import 'package:bharti_assignment/Network/Model/ResponseListImages/ResponsePixabayImageList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Network/Api/ApiHandler.dart';
 import 'Network/Model/ResponseListImages/ResponsePixabayImage.dart';
+import 'Provider/GetImageProvider.dart';
+import 'Provider/ProviderUtils.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatefulHookWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
@@ -16,23 +20,35 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  ResponsePixabayImage? responsePixabayImage = ResponsePixabayImage();
+  ResponsePixabayImage? _responsePixabayImage;
+  List<ResponsePixabayImageList>? _responsePixabayImageList;
+  bool _isFirstTimeScreenCalling = true;
+  late GetImageProvider _getImageProvider;
+
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    _hitImagesApi();
+    if (_isFirstTimeScreenCalling) {
+      _isFirstTimeScreenCalling = false;
+      GetImageProvider.resetAllDataWithNotifyUI(context);
+      GetImageProvider.checkGetMembersStateAndChangeUI(context);
+    }
   }
 
-  void _hitImagesApi()async{
+  /*void _hitImagesApi()async{
     responsePixabayImage = await ApiHandler.getImages();
     print("bharti response -> ${responsePixabayImage?.hits?.length}");
     setState(() {});
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+
+    _getImageProvider = useProvider(getImageProvider);
+    _responsePixabayImage = _getImageProvider.getResponseGetPixabayImage;
+    _responsePixabayImageList = _getImageProvider.getResponsePixabayImageList;
 
     return Scaffold(
       appBar: AppBar(
@@ -42,9 +58,9 @@ class _HomePageState extends State<HomePage> {
       body: StaggeredGridView.countBuilder(
         shrinkWrap: true,
         crossAxisCount: 2,
-        itemCount: responsePixabayImage?.hits?.length,
+        itemCount: _responsePixabayImageList?.length,
         itemBuilder: (BuildContext context, int index) {
-          var hitData = responsePixabayImage?.hits![index];
+          var hitData = _responsePixabayImageList![index];
           return GestureDetector(
               onTap: ()
               {
