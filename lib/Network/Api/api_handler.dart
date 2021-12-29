@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio_http_cache/dio_http_cache.dart';
+
 import '../Model/ResponseListImages/response_pixabay_image.dart';
 import 'package:dio/dio.dart';
 
@@ -12,6 +14,9 @@ class ApiHandler {
   static const String KEY_API_KEY = 'key';
   static const String API_KEY_VALUE = '25023211-a4df79798dfb36788948617f4';
 
+  static final int perPage = 20;
+
+  static DioCacheManager? _cacheManager;
   static ApiHandler? _instance;
 
   static Dio? _api;
@@ -26,6 +31,12 @@ class ApiHandler {
     return _PRODUCTION_URL_DEVELOPMENT;
   }
 
+  static DioCacheManager getCacheManager() {
+    if (null == _cacheManager) {
+      _cacheManager = DioCacheManager(CacheConfig(baseUrl: getUrl(), defaultMaxStale: Duration(days: 10)));
+    }
+    return _cacheManager!;
+  }
 
   static Future<Dio> getApiFromUrl(String url) async {
     final _dio = Dio();
@@ -33,6 +44,7 @@ class ApiHandler {
     _dio.options.baseUrl = url;
     _dio.options.contentType = _ContentTypeJson;
     _dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+    _dio.interceptors.add(getCacheManager().interceptor);
 
     return _dio;
   }
@@ -40,15 +52,17 @@ class ApiHandler {
   /// dio instance method.
   static Future<Dio> getApi() async {
     _api ??= await getApiFromUrl(getUrl());
+    return _api!;
+  }
 
-      return _api!;
-    }
-
-
-  static Future<ResponsePixabayImage?> getImages() async {
+  static Future<ResponsePixabayImage?> getImages(int page, {String search = ''}) async {
     try {
       final dio = await getApi();
-      final responseApi = await dio.get('/?key=$API_KEY_VALUE');
+      final responseApi = await dio.get('/?key=$API_KEY_VALUE&image_type=photo&page=$page&per_page=$perPage&q=$search',
+          options: buildCacheOptions(
+            Duration(days: 3),
+            maxStale: Duration(days: 7),
+          ));
 
       final parseResponse = responseApi.toString();
       final responseMap = json.decode(parseResponse) as Map<String, dynamic>;

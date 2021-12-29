@@ -1,8 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
 
-import 'Network/Api/api_handler.dart';
-import 'Network/Model/ResponseListImages/response_pixabay_image.dart';
 import 'Utils/image_util.dart';
 
 class ImagePreview extends StatefulWidget {
@@ -14,39 +14,60 @@ class ImagePreview extends StatefulWidget {
 }
 
 class _ImagePreviewState extends State<ImagePreview> {
-
-  ResponsePixabayImage? responsePixabayImage = ResponsePixabayImage();
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    _hitImagesApi();
-  }
-
-  void _hitImagesApi()async{
-    responsePixabayImage = await ApiHandler.getImages();
-    print("bharti response -> ${responsePixabayImage?.hits?.length}");
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-
         title: const Text("image preview"),
       ),
-      body: PinchZoom(
-        resetDuration: const Duration(milliseconds: 100),
-        maxScale: 2.5,
-        onZoomStart: (){print('Start zooming');},
-        onZoomEnd: (){print('Stop zooming');},
-        child: ImageUtil.getImage(widget.image),
-      ),
+      body: buildPinchZoom(),
     );
   }
 
- 
+  Widget buildMainWidget() {
+
+    /*return Container(
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(widget.image),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: ClipRRect( // make sure we apply clip it properly
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.grey.withOpacity(0.1),
+            child: buildPinchZoom(),
+          ),
+        ),
+      ),
+    );*/
+
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(widget.image),
+            fit:  BoxFit.fill,
+          )
+      ),
+      child: buildPinchZoom(),
+    );
+  }
+
+  Widget buildPinchZoom() {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: PinchZoom(
+        resetDuration: const Duration(milliseconds: 100),
+        maxScale: 2.5,
+        onZoomStart: () {},
+        onZoomEnd: () {},
+        child: ImageUtil.getImage(widget.image, boxFit: BoxFit.contain),
+      ),
+    );
+  }
 }
