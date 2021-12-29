@@ -3,11 +3,8 @@ import '../Network/Model/ResponseListImages/response_pixabay_image.dart';
 import '../Network/Model/ResponseListImages/response_pixabay_image_list.dart';
 import '../Utils/app_enums.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/src/provider.dart';
 
-import 'provider_utils.dart';
-
-class ImageProvider extends ChangeNotifier{
+class JifyImageProvider extends ChangeNotifier{
 
   ResponsePixabayImage? _responsePixabayImage;
   UIStates _uiStatesGetMembers = UIStates.DEFAULT;
@@ -38,7 +35,7 @@ class ImageProvider extends ChangeNotifier{
   bool isEmptyGetImages() => (_responsePixabayImage?.hits?.isEmpty ?? false);
   bool isErrorGetImages() => (isEmptyGetImages());
 
-  void _checkGetMembersStateAndChangeUI() {
+  void checkGetMembersStateAndChangeUI() {
     ++_countCheckGetImageState;
 
     if(_countCheckGetImageState > 3) {
@@ -68,7 +65,7 @@ class ImageProvider extends ChangeNotifier{
     if(!_isApiCalling) {
       _resetApiData();
       _responsePixabayImage = await _hitApiToFetchImages();
-      _checkGetMembersStateAndChangeUI();
+      checkGetMembersStateAndChangeUI();
     }
   }
 
@@ -79,6 +76,7 @@ class ImageProvider extends ChangeNotifier{
     return response;
   }
 
+/*
   static void resetAllDataWithNotifyUI(BuildContext context) =>
       context.read(getImageProvider)._resetAllDataWithNotifyUI();
 
@@ -86,5 +84,5 @@ class ImageProvider extends ChangeNotifier{
       context.read(getImageProvider)._checkGetMembersStateAndChangeUI();
 
   static Future<ResponsePixabayImage?> hitApiToFetchImages(BuildContext context) =>
-      context.read(getImageProvider)._hitApiToFetchImages();
+      context.read(getImageProvider)._hitApiToFetchImages();*/
 }
