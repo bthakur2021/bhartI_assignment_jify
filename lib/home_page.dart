@@ -1,4 +1,4 @@
-import 'package:bharti_assignment/Utils/image_util.dart';
+import 'Utils/image_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -17,23 +17,24 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  TextEditingController _textEditingController = TextEditingController();
+
   _HomePageState() {
     searchBar = new SearchBar(
         inBar: false,
         setState: setState,
+        controller: _textEditingController,
         onSubmitted: _search,
-        buildDefaultAppBar: buildAppBar
-    );
+        buildDefaultAppBar: buildAppBar);
   }
+
   late SearchBar searchBar;
 
   AppBar buildAppBar(BuildContext context) {
     return new AppBar(
         title: new Text('Jify Gallery (Images: ${_responsePixabayImageList?.length ?? 0})'),
-        actions: [searchBar.getSearchAction(context)]
-    );
+        actions: [searchBar.getSearchAction(context)]);
   }
-
 
   List<ResponsePixabayImageList>? _responsePixabayImageList;
   bool _isFirstTimeScreenCalling = true;
@@ -102,7 +103,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-
   Widget _buildGridWidget() {
     return MasonryGridView.count(
       crossAxisCount: 2,
@@ -117,14 +117,19 @@ class _HomePageState extends ConsumerState<HomePage> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ImagePreview(image: imageData.largeImageURL.toString(), heroWidgetTag: heroWidgetTag,)),
+              MaterialPageRoute(
+                  builder: (context) => ImagePreview(
+                        image: imageData.largeImageURL.toString(),
+                        heroWidgetTag: heroWidgetTag,
+                      )),
             );
           },
           child: Container(
             width: MediaQuery.of(context).size.width / 2,
             child: Hero(
                 tag: heroWidgetTag,
-                child: ImageUtil.getImage(imageData.webformatURL.toString(), aspectRatio: imageData.webformatWidth! / imageData.webformatHeight!)),
+                child: ImageUtil.getImage(imageData.webformatURL.toString(),
+                    aspectRatio: imageData.webformatWidth! / imageData.webformatHeight!)),
           ),
         );
       },
@@ -132,6 +137,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _search(String value) {
+    value = value.trim();
+    value = value.replaceAll(" ", "+");
     _jifyImageProvider.searchImage(value);
   }
 }

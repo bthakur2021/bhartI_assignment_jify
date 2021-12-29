@@ -1,4 +1,4 @@
-import 'package:bharti_assignment/Utils/color_utils.dart';
+import 'color_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

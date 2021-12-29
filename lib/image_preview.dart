@@ -27,27 +27,6 @@ class _ImagePreviewState extends State<ImagePreview> {
   }
 
   Widget buildMainWidget() {
-
-    /*return Container(
-      width: double.maxFinite,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(widget.image),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: ClipRRect( // make sure we apply clip it properly
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            alignment: Alignment.center,
-            color: Colors.grey.withOpacity(0.1),
-            child: buildPinchZoom(),
-          ),
-        ),
-      ),
-    );*/
-
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
