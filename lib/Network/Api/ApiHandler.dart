@@ -114,6 +114,7 @@ class ApiHandler {
       return response;
     } catch (e) {
       print(e);
+      return null;
     }
   }
 
