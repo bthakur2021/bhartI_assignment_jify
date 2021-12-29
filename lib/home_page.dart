@@ -111,16 +111,20 @@ class _HomePageState extends ConsumerState<HomePage> {
       itemCount: _responsePixabayImageList?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
         var imageData = _responsePixabayImageList![index];
+        String heroWidgetTag = imageData.webformatURL ?? 'jify';
+
         return GestureDetector(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ImagePreview(image: imageData.largeImageURL.toString())),
+              MaterialPageRoute(builder: (context) => ImagePreview(image: imageData.largeImageURL.toString(), heroWidgetTag: heroWidgetTag,)),
             );
           },
           child: Container(
             width: MediaQuery.of(context).size.width / 2,
-            child: ImageUtil.getImage(imageData.webformatURL.toString(), aspectRatio: imageData.webformatWidth! / imageData.webformatHeight!),
+            child: Hero(
+                tag: heroWidgetTag,
+                child: ImageUtil.getImage(imageData.webformatURL.toString(), aspectRatio: imageData.webformatWidth! / imageData.webformatHeight!)),
           ),
         );
       },
